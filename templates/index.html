@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="centered">
+  <h1>API Documentation</h1>
+  <p>
+    Welcome to the API documentation for our Wine-o-meter prediction AP-AI.
+  </p>
+  <p>
+    What is Wine-o-meter? It's a new beautiful AI model wrap into an API to help wine producers to predict the quality score of their wine based on physicochemical inputs.
+  </p>
+  <div>
+    <h2>Endpoints</h2>
+    <blockquote>
+      POST /prediction
+    </blockquote>
+    <div>
+      <p>
+        This endpoint allows you to make a prediction of the wine quality score.
+      </p>
+      <h3>
+        How to request this endpoint?
+      </h3>
+      <p>
+        You should request this endpoint using a POST method with a JSON content. Your JSON should contain at least "input" key with associated value (list of list of 11 floats).
+      </p>
+      <p>
+        Example: <code>curl -i -H "Content-Type: application/json" -X POST -d '{"input": [[7.0, 0.27, 0.36, 20.7, 0.045, 45.0, 170.0, 1.001, 3.0, 0.45, 8.8]]}' http://localhost:5000/predict</code>
+      </p>
+      <p>
+        It returns a JSON like so:
+        <pre>
+          <code>
+  {
+    "prediction": "6"
+  }
+          </code>
+        </pre>
+      </p>
+      <p>
+        You can add an other list of physicochemical inputs in order to have diffrent results:
+      </p>
+      <pre>
+        <code>
+  $ curl -i -H "Content-Type: application/json" -X POST -d '{"input": [[7.0, 0.27, 0.36, 20.7, 0.045, 45.0, 170.0, 1.001, 3.0, 0.45, 8.8],[5.0, 0.98, 0.32, 18.9, 0.050, 75.0, 122.0, 0.401, 3.1, 0.21, 1.2]]}' http://localhost:5000/predict
+        </code>
+      </pre>
+      <p>
+        It returns a JSON like so:
+        <pre>
+          <code>
+    {
+    "prediction": "[6, 5]"
+    }
+          </code>
+        </pre>
+      </p>
+         
+      
+      <h3>
+        Errors
+      </h3>
+      <p>
+        Our API will return an error with format:
+        <pre>
+          <code>
+  {
+    "code": <i>HTTP status code</i>,
+    "name": <i>name of this error</i>,
+    "description": <i>a short description</i>
+  }
+          </code>
+        </pre>
+      </p>
+      <p>
+        Identified errors:
+        <ul>
+          <li>Missing JSON</li>
+          <li>Missing key "input"</li>
+          <li>Input_type error</li>
+          <li>Bad len input</li>
+          <li>List input_Type erro</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
